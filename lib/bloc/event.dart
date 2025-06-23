@@ -8,8 +8,13 @@ class AddTodo extends TodoEvent {
   AddTodo(this.taskText);
 }
 
-
 class DeleteTodo extends TodoEvent {
   final String taskId;
   DeleteTodo(this.taskId);
 }
+
+// class UpdateTodo extends TodoEvent {
+//   final String taskId;
+//   final String newText;
+//   UpdateTodo(this.taskId, this.newText);
+// }

@@ -10,11 +10,20 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   FirebaseDatabase.instance.ref('user_tasks/default_user');
 
   TodoBloc() : super(TodoLoading()) {
-    on<LoadTodos>(_onLoadTodos);
     on<AddTodo>(_onAddTodo);
+    on<LoadTodos>(_onLoadTodos);
     on<DeleteTodo>(_onDeleteTodo);
   }
+  //AddTodos
+  Future<void> _onAddTodo(AddTodo event, Emitter<TodoState> emit) async {
+    await _tasksRef.push().set({
+      'text': event.taskText,
+      'createdAt': ServerValue.timestamp,
+    });
+    add(LoadTodos());
+  }
 
+  //LoadTodos
   Future<void> _onLoadTodos(LoadTodos event, Emitter<TodoState> emit) async {
     emit(TodoLoading());
 
@@ -49,24 +58,10 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     emit(TodoLoaded(todos.reversed.toList()));
   }
 
-  Future<void> _onAddTodo(AddTodo event, Emitter<TodoState> emit) async {
-    await _tasksRef.push().set({
-      'text': event.taskText,
-      'createdAt': ServerValue.timestamp,
-    });
-    add(LoadTodos());
-  }
-
+  //DeleteTodo
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodoState> emit) async {
     await _tasksRef.child(event.taskId).remove();
     add(LoadTodos());
   }
 }
 
-//   Future<void> _onUpdateTodo(UpdateTodo event, Emitter<TodoState> emit) async {
-//     await _tasksRef.child(event.taskId).update({
-//       'text': event.newText,
-//     });
-//     add(LoadTodos());
-//   }
-// }

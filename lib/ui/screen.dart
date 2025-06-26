@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
                       return ListTile(
                         title: Text(todoText),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete_sweep, color: Colors.redAccent),
+                          icon: const Icon(Icons.delete, color: Colors.redAccent),
                           onPressed: () {
                             context.read<TodoBloc>().add(DeleteTodo(todoId));
                           },
@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(12.0),
             child: Row(
               children: [
-                Expanded(
+            Expanded(
                   child: TextField(
                     controller: textController,
                     decoration: const InputDecoration(
@@ -69,8 +69,8 @@ class HomePage extends StatelessWidget {
                 FloatingActionButton(
                   child: const Icon(Icons.add),
                   onPressed: () {
-                    if (textController.text.trim().isNotEmpty) {
-                      context.read<TodoBloc>().add(AddTodo(textController.text.trim()));
+                    if (textController.text.isNotEmpty) {
+                      context.read<TodoBloc>().add(AddTodo(textController.text));
                       textController.clear();
                     }
                   },
